@@ -1,7 +1,7 @@
 var spawn = require('child_process').spawn, util = require('util'), uuid = require('node-uuid'), events =
   require('events'), fs = require('fs'), logger = require('winston');
 var location = '/tmp/camelot/';
-fs.mkdir(location, 0777);
+fs.mkdir(location, 0777, function(){});
 
 var _options = {
   verbose: true,
@@ -155,8 +155,9 @@ Camelot.prototype.grab =
 
                 fs.exists(file, function (exists) {
                   if (!exists) {
-                    var err = new Error('Frame file unavailable.');
+                    var err = new Error('Frame file unavailable: code=' + code);
                     self.emit('error', err);
+                    self.emit('error.code', code);
                     if (callback) {
                       callback.call(err);
                     }
