@@ -159,7 +159,7 @@ Camelot.prototype.grab =
                     self.emit('error', err);
                     self.emit('error.code', code);
                     if (callback) {
-                      callback.call(err);
+                      callback(err);
                     }
                   } else {
                     fs.readFile(file, function (err, data) {
@@ -167,15 +167,16 @@ Camelot.prototype.grab =
                       if (err) {
                         self.emit('error', err);
                         if (callback) {
-                          callback.call(err);
+                          callback(err);
                         }
                       } else {
 
                         self.emit('frame', data);
-                        fs.unlink(file);
                         if (callback) {
-                          callback(data);
+                          callback(null, data);
                         }
+                        fs.unlink(file);
+                        
                       }
                     });
                   }
